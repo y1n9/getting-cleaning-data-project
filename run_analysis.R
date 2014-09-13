@@ -75,16 +75,9 @@ names(combinedData) <- colNames
 
 ## 5. From the data set in step 4, creates a second, independent tidy data set with 
 ##    the average of each variable for each activity and each subject.
-
-# Create a new table, finalDataNoActivityType without the activityType column
-finalDataNoActivityType  = finalData[,names(finalData) != 'activityType'];
-
-# Summarizing the finalDataNoActivityType table to include just the mean of each variable for each activity and each subject
-tidyData    = aggregate(finalDataNoActivityType[,names(finalDataNoActivityType) != c('activityId','subjectId')],by=list(activityId=finalDataNoActivityType$activityId,subjectId = finalDataNoActivityType$subjectId),mean);
-
 combinedData <- combinedData[, colNames != 'activityType']
 colNames <- names(combinedData)
-grpd <- with(combinedData, aggregate(combinedData, by=list(activityId, subjectId), FUN=mean, na.rm=TRUE))[, colNames]
+grpd <- with(combinedData, aggregate(combinedData, by=list(activityId, subjectId), FUN=mean, na.rm=TRUE))
 result <- merge(grpd, activityType, by="activityId", all.x=TRUE)
 
 # Export the tidy data set 
