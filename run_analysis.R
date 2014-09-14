@@ -78,7 +78,9 @@ names(combinedData) <- colNames
 combinedData <- combinedData[, colNames != 'activityType']
 colNames <- names(combinedData)
 grpd <- with(combinedData, aggregate(combinedData, by=list(activityId, subjectId), FUN=mean, na.rm=TRUE))
-result <- merge(grpd, activityType, by="activityId", all.x=TRUE)
+grpd <- grpd[, colNames]
+result <- merge(activityType, grpd, by="activityId", all.y=TRUE)
+result <- result[, names(result) != "activityId"]
 
 # Export the tidy data set 
-write.table(result, './tidy_data.txt',row.name=FALSE,sep='\t')
+write.table(result, './tidy_data.txt',row.names=FALSE,sep='\t')
